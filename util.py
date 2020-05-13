@@ -1,12 +1,16 @@
 import platform
 import pandas as pd
 
+
+# DATABASE_PATH = 'E:/PI_INF442/p1-power-weather/'
+
 if platform.node() == 'DESKTOP-QGJFK60': #PC of LULU
     DATABASE_PATH = 'C:/Users/lu/Desktop/PI/p1-power-weather/'
-elif platform.node() == 'Name_of_PC_jiajia': #PC of JIAJIA
-    DATABASE_PATH = 'PATH of dataset of jiajia to complete'
+elif platform.node() == 'DESKTOP-KDOM9K4': #PC of JIAJIA
+    DATABASE_PATH = 'E:/PI_INF442/p1-power-weather/'
     
 def load_data(dt = 'w', name = '200701',mode = 'load'):
+#     print(DATABASE_PATH)
     w_names = ['date','time','g_active_power','g_reactive_power','voltage','global_intensity','sub_1_kitchen','sub_2_laundry','sub_3_wh_ac']
     if(mode!='load' or dt not in ('w','p')):
         print('++++++++++++++++++++++++++++++++++++++\n            help mode\n++++++++++++++++++++++++++++++++++++++')
