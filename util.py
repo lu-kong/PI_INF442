@@ -20,9 +20,9 @@ def load_data(dt = 'w', name = '200701',mode = 'load'):
     else:
         if(dt=='w'): 
             PATH = DATABASE_PATH +  'weather/synop.' + str(name)+'.csv'
-            return pd.read_csv(PATH,';', low_memory = False)
+            return pd.read_csv(PATH, ';', low_memory = False)
 #        PATH = DATABASE_PATH + (dt == 'w')? 'weather/synop.': 'household_power_consumption/household_power_consumption_'
         else: 
             PATH = DATABASE_PATH + 'household_power_consumption/household_power_consumption_' + str(name)+'.csv'
             names = w_names
-            return pd.read_csv(PATH,';',names=names, low_memory = False)
+            return pd.read_csv(PATH, ';', names=names, low_memory = False)
