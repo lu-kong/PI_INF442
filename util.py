@@ -60,6 +60,7 @@ def time_rescale(df,timescale = '3H',how='any',mode = 'mean'):
         res = df_dropped.iloc[:,2:].resample(timescale,on = 'full_time').mean()
     if(mode == 'max'):
         res = df_dropped.iloc[:,2:].resample(timescale,on = 'full_time').max()
+    res.reset_index(inplace = True)
     print('done\n')
     return res
 # >>>>>>> 870ef04c2909646bd98547e4a94f17a8753aac9b
