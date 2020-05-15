@@ -25,4 +25,41 @@ def load_data(dt = 'w', name = '200701',mode = 'load'):
         else: 
             PATH = DATABASE_PATH + 'household_power_consumption/household_power_consumption_' + str(name)+'.csv'
             names = w_names
+# <<<<<<< HEAD
             return pd.read_csv(PATH, ';', names=names, low_memory = False)
+# =======
+            return pd.read_csv(PATH,';',names=names, low_memory = False)
+        
+def time_rescale(df,timescale = '3H',how='any',mode = 'mean'):
+    """
+    parameters:
+    -----------------------------------------
+    df       : Dataframe (support only data of power_consumption for instance)
+    timescae : Time scale to change to, chosen generally from 'XT','XH','XD'...X is a number to be chosen
+    how      : usuel for dropping unfilled rows  how = 'any' by default
+    mode     : mode to rescale, choosen from ('mean','max','sum')
+    return:
+    -----------------------------------------
+    df cleaned and rescaled indexed by 'full_time'
+    """
+    assert mode in ('mean','sum','max') ,"mode is to be choosen from ('mean','max','sum')"
+    
+    print('Processe begin...\n')
+    df_comb = df.copy()
+    print('Begin configuring datetime line ...',end='')
+    df_comb['full_time'] = df_comb['date']+' '+ df_comb['time']
+    df_comb['full_time'] = pd.to_datetime(df_comb['full_time'])
+    print('done')
+    print('Begin dropping bug data ...',end='')
+    df_dropped = df_comb.dropna(how = how)
+    print(' done')
+    df_dropped.iloc[:,2:-1] = df_dropped.iloc[:,2:-1].apply(pd.to_numeric)
+    if(mode == 'sum'):
+        res = df_dropped.iloc[:,2:].resample(timescale,on = 'full_time').sum()
+    if(mode == 'mean'):
+        res = df_dropped.iloc[:,2:].resample(timescale,on = 'full_time').mean()
+    if(mode == 'max'):
+        res = df_dropped.iloc[:,2:].resample(timescale,on = 'full_time').max()
+    print('done\n')
+    return res
+# >>>>>>> 870ef04c2909646bd98547e4a94f17a8753aac9b
