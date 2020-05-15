@@ -20,11 +20,14 @@ def load_data(dt = 'w', name = '200701',mode = 'load'):
     else:
         if(dt=='w'): 
             PATH = DATABASE_PATH +  'weather/synop.' + str(name)+'.csv'
-            return pd.read_csv(PATH,';', low_memory = False)
+            return pd.read_csv(PATH, ';', low_memory = False)
 #        PATH = DATABASE_PATH + (dt == 'w')? 'weather/synop.': 'household_power_consumption/household_power_consumption_'
         else: 
             PATH = DATABASE_PATH + 'household_power_consumption/household_power_consumption_' + str(name)+'.csv'
             names = w_names
+# <<<<<<< HEAD
+            return pd.read_csv(PATH, ';', names=names, low_memory = False)
+# =======
             return pd.read_csv(PATH,';',names=names, low_memory = False)
         
 def time_rescale(df,timescale = '3H',how='any',mode = 'mean'):
@@ -59,3 +62,4 @@ def time_rescale(df,timescale = '3H',how='any',mode = 'mean'):
         res = df_dropped.iloc[:,2:].resample(timescale,on = 'full_time').max()
     print('done\n')
     return res
+# >>>>>>> 870ef04c2909646bd98547e4a94f17a8753aac9b
