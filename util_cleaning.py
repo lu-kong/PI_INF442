@@ -26,7 +26,8 @@ def power_clean(year = 2007):
     for c in df.columns[2:]:
         df[c] = pd.to_numeric(df[c], errors='coerce')
         df[c] = delete_outlier(df[c])
-        df.interpolate(method = 'linear', limit_direction='forward', inplace = True)
+    df.interpolate(method = 'linear', limit_direction='forward', inplace = True)
+    df.interpolate(method = 'linear', limit_direction='backward', inplace = True)
     return df  
 
 
@@ -45,6 +46,7 @@ def abstract_data(code = 7149):
         for j in range(12):
             name = str(200701 + i*100 + j)
             df_tmp = load_data(dt = 'w', name = name)
+            df_tmp.replace(['mq'],np.NaN, inplace=True)
             del_col = ['cod_tend', 'ww', 'w1', 'w2', 'cl', 'cm', 'ch', 'sw','etat_sol', 'phenspe1', 'phenspe2', 'phenspe3', 'phenspe4',
                        'ctype1', 'ctype2','ctype3', 'ctype4']
             df_tmp.drop(columns = del_col, inplace = True)
@@ -57,4 +59,17 @@ def abstract_data(code = 7149):
             df = pd.concat([df, df_tmp])
     df.reset_index(drop = True, inplace = True)
     return df
+
+def weather_clean():
+    df = abstract_data()
+#     df.replace(['mq'],np.NaN, inplace=True)
+    for col in df.columns[2:]:
+        if(df[col].isna().sum()>5000):
+            df.drop(columns = col, inplace = True)
+        else:
+            df[col] = delete_outlier(pd.to_numeric(df[col]))
+    df.interpolate(method = 'linear', limit_direction='forward', inplace = True)
+    df.interpolate(method = 'linear', limit_direction='backward', inplace = True)
+    return df
+    
             

@@ -7,6 +7,10 @@ from matplotlib import pyplot as plt
 import seaborn as sns
 import pandas as pd
 
+from scipy.stats import kstest, ks_2samp
+# from sklearn.preprocessing import StandardScaler
+from sklearn import preprocessing
+
 def violin(data, str = 'g_active_power'):
     fig, ax = plt.subplots(figsize = (23,8))
     data['full_time'] = pd.to_datetime(data['full_time'])
@@ -27,3 +31,15 @@ def test_seperate_year(str = 'g_active_power'):
     ax.set_ylabel(str)
     plt.title(str+'  hourly distribution in a day (during year 2007-2010)')
     plt.show()
+    
+    
+    
+# Ks_test for the normality of hourly data, return the p-value of test
+
+def ks_test(data, hour = 0, str = 'g_active_power'):
+    x = data.loc[data['full_time'].dt.hour == hour][str]
+    xs = preprocessing.scale(x)
+    rvs = stats.norm.rvs(size=x.size)
+    test = ks_2samp(xs, rvs)
+    return test.pvalue 
+
