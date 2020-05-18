@@ -64,3 +64,19 @@ def time_rescale(df,timescale = '3H',how='any',mode = 'mean'):
     print('done\n')
     return res
 # >>>>>>> 870ef04c2909646bd98547e4a94f17a8753aac9b
+
+def plot_3d(df,i,j,k,title = " "):
+#     weather_energy = df_to_scale
+
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection = '3d')
+    
+    ax.scatter( df.iloc[:,i], 
+                df.iloc[:,j],
+               df.iloc[:,k],
+                c = df.weather_cluster)
+    ax.set_xlabel(df.columns[i])
+    ax.set_ylabel(df.columns[j])
+    ax.set_zlabel(df.columns[k])
+    plt.savefig(DATABASE_PATH + "pictures/"+df.columns[i][:5] +'and'+ df.columns[j][:5]+'and'+ df.columns[k][:5] + title+"_3d.png")
+    plt.show()
